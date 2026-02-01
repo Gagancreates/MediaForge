@@ -1,4 +1,4 @@
-# Media Converter
+# MediaForge
 
 A self-hosted web application for converting and compressing images and videos using FFmpeg.
 
