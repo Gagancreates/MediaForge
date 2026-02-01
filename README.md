@@ -2,6 +2,12 @@
 
 A self-hosted web application for converting and compressing images and videos using FFmpeg.
 
+<img width="1226" height="967" alt="Image" src="https://github.com/user-attachments/assets/d69c92ef-b4be-4554-af5d-939dcba61f0e" />
+
+<img width="1357" height="907" alt="Image" src="https://github.com/user-attachments/assets/b96d47cd-3a99-4cf6-86ba-f7f9211a107f" />
+
+<img width="1572" height="995" alt="Image" src="https://github.com/user-attachments/assets/9b4b8a10-2de5-4226-adf6-c607aebf04a1" />
+
 ## Features
 
 - **Image Conversion**: Convert between JPG, PNG, WebP, AVIF, BMP, TIFF, and GIF formats
