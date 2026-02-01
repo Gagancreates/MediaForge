@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Media Converter</h1>
+            <p class="subtitle">Convert and compress images & videos</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-button active" data-tab="image">Images</button>
+            <button class="tab-button" data-tab="video">Videos</button>
+        </div>
+
+        <div id="image" class="tab-content active">
+            <div class="dropzone" id="imageDropzone">
+                <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+                <p class="dropzone-text">Drop image here or click to browse</p>
+                <p class="dropzone-subtext">Supports: JPG, PNG, WebP, AVIF, BMP, TIFF, GIF</p>
+                <input type="file" id="imageInput" accept="image/*" hidden>
+            </div>
+
+            <div class="file-info" id="imageFileInfo" style="display: none;">
+                <span class="file-name" id="imageFileName"></span>
+                <span class="file-size" id="imageFileSize"></span>
+            </div>
+
+            <div class="operation-selector">
+                <label>
+                    <input type="radio" name="imageOperation" value="convert" checked>
+                    Convert Format
+                </label>
+                <label>
+                    <input type="radio" name="imageOperation" value="compress">
+                    Compress to Size
+                </label>
+            </div>
+
+            <div class="form-section" id="imageConvertForm">
+                <div class="form-group">
+                    <label for="imageTargetFormat">Target Format</label>
+                    <select id="imageTargetFormat">
+                        <option value="jpg">JPG</option>
+                        <option value="png">PNG</option>
+                        <option value="webp">WebP</option>
+                        <option value="avif">AVIF</option>
+                        <option value="bmp">BMP</option>
+                        <option value="tiff">TIFF</option>
+                        <option value="gif">GIF</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="imageQuality">Quality <span class="value-display" id="imageQualityValue">85</span></label>
+                    <input type="range" id="imageQuality" min="1" max="100" value="85" class="slider">
+                </div>
+            </div>
+
+            <div class="form-section" id="imageCompressForm" style="display: none;">
+                <div class="form-group">
+                    <label for="imageTargetSize">Target Size <span class="value-display" id="imageTargetSizeValue">200 KB</span></label>
+                    <input type="range" id="imageTargetSize" min="10" max="5000" value="200" step="10" class="slider">
+                </div>
+                <div class="form-group">
+                    <label for="imageCompressFormat">Format</label>
+                    <select id="imageCompressFormat">
+                        <option value="jpg">JPG</option>
+                        <option value="webp">WebP</option>
+                        <option value="png">PNG</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="process-button" id="imageProcessButton" disabled>
+                Process Image
+            </button>
+
+            <div class="result-view" id="imageResultView" style="display: none;">
+                <div class="result-header">
+                    <h3>Processed Image</h3>
+                    <div class="result-info-badge">
+                        <span id="imageResultFormat">JPG</span> • <span id="imageResultSize">0 KB</span>
+                    </div>
+                </div>
+                <div class="result-preview" id="imageResultPreview"></div>
+                <div class="result-actions-bar">
+                    <button class="result-btn secondary" id="imageCompareBtn">Compare</button>
+                    <button class="result-btn secondary" id="imageProcessAnotherBtn">Process Another</button>
+                    <button class="result-btn primary" id="imageDownloadBtn">Download</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="video" class="tab-content">
+            <div class="dropzone" id="videoDropzone">
+                <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+                <p class="dropzone-text">Drop video here or click to browse</p>
+                <p class="dropzone-subtext">Supports: MP4, WebM, AVI, MKV, MOV, FLV</p>
+                <input type="file" id="videoInput" accept="video/*" hidden>
+            </div>
+
+            <div class="file-info" id="videoFileInfo" style="display: none;">
+                <span class="file-name" id="videoFileName"></span>
+                <span class="file-size" id="videoFileSize"></span>
+            </div>
+
+            <div class="operation-selector">
+                <label>
+                    <input type="radio" name="videoOperation" value="convert" checked>
+                    Convert Format
+                </label>
+                <label>
+                    <input type="radio" name="videoOperation" value="compress">
+                    Compress to Size
+                </label>
+            </div>
+
+            <div class="form-section" id="videoConvertForm">
+                <div class="form-group">
+                    <label for="videoTargetFormat">Target Format</label>
+                    <select id="videoTargetFormat">
+                        <option value="mp4">MP4</option>
+                        <option value="webm">WebM</option>
+                        <option value="avi">AVI</option>
+                        <option value="mkv">MKV</option>
+                        <option value="mov">MOV</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="videoQuality">Quality</label>
+                    <select id="videoQuality">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="videoCodec">Codec</label>
+                    <select id="videoCodec">
+                        <option value="">Auto</option>
+                        <option value="libx264">H.264</option>
+                        <option value="libx265">H.265</option>
+                        <option value="libvpx-vp9">VP9</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-section" id="videoCompressForm" style="display: none;">
+                <div class="form-group">
+                    <label for="videoTargetSize">Target Size <span class="value-display" id="videoTargetSizeValue">50 MB</span></label>
+                    <input type="range" id="videoTargetSize" min="1" max="500" value="50" step="1" class="slider">
+                </div>
+                <div class="form-group">
+                    <label for="videoCompressFormat">Format</label>
+                    <select id="videoCompressFormat">
+                        <option value="mp4">MP4</option>
+                        <option value="webm">WebM</option>
+                        <option value="mkv">MKV</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="videoCompressCodec">Codec</label>
+                    <select id="videoCompressCodec">
+                        <option value="">Auto</option>
+                        <option value="libx264">H.264</option>
+                        <option value="libx265">H.265</option>
+                        <option value="libvpx-vp9">VP9</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="process-button" id="videoProcessButton" disabled>
+                Process Video
+            </button>
+
+            <div class="result-view" id="videoResultView" style="display: none;">
+                <div class="result-header">
+                    <h3>Processed Video</h3>
+                    <div class="result-info-badge">
+                        <span id="videoResultFormat">MP4</span> • <span id="videoResultSize">0 MB</span>
+                    </div>
+                </div>
+                <div class="result-preview" id="videoResultPreview"></div>
+                <div class="result-actions-bar">
+                    <button class="result-btn secondary" id="videoCompareBtn">Compare</button>
+                    <button class="result-btn secondary" id="videoProcessAnotherBtn">Process Another</button>
+                    <button class="result-btn primary" id="videoDownloadBtn">Download</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="error-message" id="errorMessage" style="display: none;"></div>
+    </div>
+
+    <div class="processing-overlay" id="processingOverlay" style="display: none;">
+        <div class="processing-modal">
+            <div class="spinner"></div>
+            <h2>Processing</h2>
+            <p id="processingText">Converting your media...</p>
+            <div class="progress-bar-modern">
+                <div class="progress-fill-modern"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="results-overlay" id="comparisonOverlay" style="display: none;">
+        <div class="results-modal">
+            <div class="results-header">
+                <h2>Comparison</h2>
+                <button class="close-button" id="closeComparison">&times;</button>
+            </div>
+
+            <div class="comparison-toggle">
+                <button class="toggle-btn active" data-view="compare" id="compareViewBtn">Side by Side</button>
+                <button class="toggle-btn" data-view="metrics" id="metricsViewBtn">Metrics</button>
+            </div>
+
+            <div class="compare-view" id="compareView">
+                <div class="compare-container">
+                    <div class="compare-item">
+                        <h4>Original</h4>
+                        <div class="media-preview" id="originalPreview"></div>
+                    </div>
+                    <div class="compare-item">
+                        <h4>Processed</h4>
+                        <div class="media-preview" id="processedPreview"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metrics-view" id="metricsView" style="display: none;">
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h3>Original</h3>
+                        <div class="metric-item">
+                            <span class="metric-label">Format</span>
+                            <span class="metric-value" id="originalFormat">-</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Size</span>
+                            <span class="metric-value" id="originalSize">-</span>
+                        </div>
+                        <div class="metric-item" id="originalDimensionsContainer" style="display: none;">
+                            <span class="metric-label">Dimensions</span>
+                            <span class="metric-value" id="originalDimensions">-</span>
+                        </div>
+                        <div class="metric-item" id="originalDurationContainer" style="display: none;">
+                            <span class="metric-label">Duration</span>
+                            <span class="metric-value" id="originalDuration">-</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card metric-card-processed">
+                        <h3>Processed</h3>
+                        <div class="metric-item">
+                            <span class="metric-label">Format</span>
+                            <span class="metric-value" id="processedFormat">-</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Size</span>
+                            <span class="metric-value" id="processedSize">-</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Reduction</span>
+                            <span class="metric-value metric-highlight" id="sizeReduction">-</span>
+                        </div>
+                        <div class="metric-item" id="processedDimensionsContainer" style="display: none;">
+                            <span class="metric-label">Dimensions</span>
+                            <span class="metric-value" id="processedDimensions">-</span>
+                        </div>
+                        <div class="metric-item" id="processedDurationContainer" style="display: none;">
+                            <span class="metric-label">Duration</span>
+                            <span class="metric-value" id="processedDuration">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
