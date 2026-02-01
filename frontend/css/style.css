@@ -220,6 +220,30 @@ h1 {
     margin-bottom: 1.5rem;
 }
 
+.estimate-info {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: rgba(37, 99, 235, 0.1);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.estimate-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.estimate-value {
+    font-size: 0.9375rem;
+    color: var(--primary-light);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
 .form-group {
     margin-bottom: 1.25rem;
 }

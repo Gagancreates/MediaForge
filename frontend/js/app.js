@@ -80,6 +80,12 @@ class MediaConverter {
         const imageQualityValue = document.getElementById('imageQualityValue');
         imageQuality.addEventListener('input', (e) => {
             imageQualityValue.textContent = e.target.value;
+            this.updateImageConvertEstimate();
+        });
+
+        const imageTargetFormat = document.getElementById('imageTargetFormat');
+        imageTargetFormat.addEventListener('change', () => {
+            this.updateImageConvertEstimate();
         });
 
         const imageTargetSize = document.getElementById('imageTargetSize');
@@ -142,6 +148,21 @@ class MediaConverter {
             videoTargetSizeValue.textContent = `${e.target.value} MB`;
         });
 
+        const videoQuality = document.getElementById('videoQuality');
+        videoQuality.addEventListener('change', () => {
+            this.updateVideoConvertEstimate();
+        });
+
+        const videoTargetFormat = document.getElementById('videoTargetFormat');
+        videoTargetFormat.addEventListener('change', () => {
+            this.updateVideoConvertEstimate();
+        });
+
+        const videoCodec = document.getElementById('videoCodec');
+        videoCodec.addEventListener('change', () => {
+            this.updateVideoConvertEstimate();
+        });
+
         document.getElementById('videoDownloadBtn').addEventListener('click', () => {
             if (this.processedBlob && this.processedFilename) {
                 this.downloadFile(this.processedBlob, this.processedFilename);
@@ -184,6 +205,7 @@ class MediaConverter {
         document.getElementById('imageFileSize').textContent = this.formatFileSize(file.size);
         document.getElementById('imageFileInfo').style.display = 'flex';
         document.getElementById('imageProcessButton').disabled = false;
+        this.updateImageConvertEstimate();
         this.hideError();
     }
 
@@ -200,6 +222,7 @@ class MediaConverter {
         document.getElementById('videoFileSize').textContent = this.formatFileSize(file.size);
         document.getElementById('videoFileInfo').style.display = 'flex';
         document.getElementById('videoProcessButton').disabled = false;
+        this.updateVideoConvertEstimate();
         this.hideError();
     }
 
@@ -553,6 +576,68 @@ class MediaConverter {
         document.getElementById('videoProcessButton').disabled = true;
         document.getElementById('videoInput').value = '';
         this.toggleVideoForms();
+    }
+
+    updateImageConvertEstimate() {
+        if (!this.imageFile) {
+            document.getElementById('imageConvertEstimate').style.display = 'none';
+            return;
+        }
+
+        const quality = parseInt(document.getElementById('imageQuality').value);
+        const format = document.getElementById('imageTargetFormat').value;
+        const originalSize = this.imageFile.size;
+
+        let estimatedSize;
+
+        if (format === 'jpg' || format === 'webp') {
+            const qualityFactor = quality / 100;
+            estimatedSize = originalSize * qualityFactor * 0.7;
+        } else if (format === 'png') {
+            estimatedSize = originalSize * 1.1;
+        } else if (format === 'avif') {
+            const qualityFactor = quality / 100;
+            estimatedSize = originalSize * qualityFactor * 0.5;
+        } else {
+            estimatedSize = originalSize * 0.8;
+        }
+
+        document.getElementById('imageConvertEstimateValue').textContent = this.formatFileSize(estimatedSize);
+        document.getElementById('imageConvertEstimate').style.display = 'flex';
+    }
+
+    updateVideoConvertEstimate() {
+        if (!this.videoFile) {
+            document.getElementById('videoConvertEstimate').style.display = 'none';
+            return;
+        }
+
+        const quality = document.getElementById('videoQuality').value;
+        const codec = document.getElementById('videoCodec').value;
+        const originalSize = this.videoFile.size;
+
+        let estimatedSize;
+
+        const qualityFactors = {
+            'low': 0.35,
+            'medium': 0.60,
+            'high': 0.90
+        };
+
+        const codecFactors = {
+            'libx265': 0.7,
+            'libvpx-vp9': 0.75,
+            'libx264': 1.0,
+            '': 1.0
+        };
+
+        const qualityFactor = qualityFactors[quality] || 0.60;
+        const codecFactor = codecFactors[codec] || 1.0;
+
+        estimatedSize = originalSize * qualityFactor * codecFactor;
+
+        document.getElementById('videoConvertEstimateValue').textContent = this.formatFileSize(estimatedSize);
+        document.getElementById('videoConvertEstimate').style.display = 'flex';
     }
 
     showProcessing(message) {
